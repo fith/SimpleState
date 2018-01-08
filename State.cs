@@ -6,23 +6,29 @@ public class State
 {
     public string name;
     public List<string> next_states;
-    Action<string> enter;
-    Action<float> update;
-    Action<string> exit;
+    public Action<string> enter;
+    public Action<float> update;
+    public Action<string> exit;
 
     public void Enter(string previous)
     {
-        enter(previous);
+        if(enter != null) {
+            enter(previous);
+        }
     }
 
     public void Update(float dt)
     {
-        update(dt);
+        if(update != null) {
+            update(dt);
+        }
     }
 
     public void Exit(string next)
     {
-        exit(next);
+        if(exit != null) {
+            exit(next);
+        }
     }
 }
 }

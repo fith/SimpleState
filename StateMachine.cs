@@ -5,19 +5,29 @@ namespace SimpleState {
 public class StateMachine
 {
     public List<State> states;
-    public State current; 
+
+    State current;
 
     public void Update(float dt) {
-        current.Update(dt);
+        if(current != null) {
+            current.Update(dt);
+        }
     }
 
-    public void changeState(string name) {
+    public bool changeState(string name) {
         if(validNextState(name)) {
             string previous = current.name;
             current.Exit(name);
-            current = this.getState(name);
-            current.Enter(previous);
+            State next = this.getState(name);
+            if(next != null) {
+                current = next;
+                current.Enter(previous);
+                return true;
+            } else {
+                throw new Exception("No state transition found:  " + previous + " -> " + name);
+            }
         }
+        return false;
     }
 
     private State getState(string name) 
