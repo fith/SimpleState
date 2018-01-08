@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SimpleState {
 public class StateMachine
 {
-    public List<State> states;
+    public List<State> states = new List<State>();
 
     State current;
 
@@ -12,6 +12,15 @@ public class StateMachine
         if(current != null) {
             current.Update(dt);
         }
+    }
+
+    public bool startState(State state) {
+        if(current == null) {
+            current = state;
+            current.enter("");
+            return true;
+        }
+        return false;
     }
 
     public bool changeState(string name) {
@@ -23,8 +32,6 @@ public class StateMachine
                 current = next;
                 current.Enter(previous);
                 return true;
-            } else {
-                throw new Exception("No state transition found:  " + previous + " -> " + name);
             }
         }
         return false;
